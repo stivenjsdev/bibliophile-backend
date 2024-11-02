@@ -1,12 +1,9 @@
-import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import { corsConfig } from "./config/cors";
 import { connectDB } from "./config/database";
 // import bookRoutes from "./routes/bookRoutes";
 import cors from "cors";
-
-dotenv.config();
 
 // Conexión a la base de datos
 connectDB();
