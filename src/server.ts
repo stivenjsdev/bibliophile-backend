@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
+import { corsConfig } from "./config/cors";
 import { connectDB } from "./config/database";
-// import { corsConfig } from "./config/cors";
 // import bookRoutes from "./routes/bookRoutes";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ connectDB();
 const app = express();
 
 // Middlewares Globales
-// app.use(cors(corsConfig)); // Habilitar CORS
+app.use(cors(corsConfig)); // Habilitar CORS
 app.use(morgan("dev")); // Logger
 app.use(express.json()); // Leer datos de formularios
 
