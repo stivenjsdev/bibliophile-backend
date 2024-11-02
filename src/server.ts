@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
+import { connectDB } from "./config/database";
 // import { corsConfig } from "./config/cors";
-// import { connectDB } from "./config/db";
 // import bookRoutes from "./routes/bookRoutes";
 
 dotenv.config();
 
 // Conexión a la base de datos
-// connectDB();
+connectDB();
 
 const app = express();
 

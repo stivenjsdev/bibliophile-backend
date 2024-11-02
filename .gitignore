@@ -10,7 +10,6 @@
 
 # local env files
 .env
-.env.*
 .env*.local
 
 # OS generated files
