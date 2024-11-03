@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body, param, query } from "express-validator";
 import { BookController } from "../controllers/book.controller";
-import { handleInputErrors } from "../middleware/validation";
+import { handleInputErrors } from "../middleware/validation.middelware";
 import { BookStatus } from "../models/book.model";
 
 // /api/books
@@ -15,9 +15,7 @@ router.get(
   query("title").optional().isString(),
   query("author").optional().isString(),
   query("genre").optional().isString(),
-  query("status")
-    .optional()
-    .isInt(),
+  query("status").optional().isInt(),
   query("rating").optional().isInt({ min: 1, max: 5 }),
   handleInputErrors,
   BookController.searchBooks
