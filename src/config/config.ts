@@ -8,5 +8,6 @@ export const config = {
     DATABASE_URL: process.env.DATABASE_URL as string,
     // NODE_ENV: process.env.NODE_ENV || 'development',
     FRONTEND_URL: process.env.FRONTEND_URL as string,
+    JWT_SECRET: process.env.JWT_SECRET as string,
     // añade más variables de entorno aquí según sea necesario
 };

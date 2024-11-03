@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
+import User from "./user.model";
 
 export enum BookStatus {
   TO_READ = 0,
@@ -14,11 +15,15 @@ export type BookAttributes = {
   status: BookStatus;
   rating?: number;
   genre: string;
+  user_id: number; // Relational attribute
 };
 
 export type BookCreationAttributes = Optional<BookAttributes, "id">;
 
-class Book extends Model<BookAttributes, BookCreationAttributes> {
+class Book
+  extends Model<BookAttributes, BookCreationAttributes>
+  implements BookAttributes
+{
   declare id: number;
   declare title: string;
   declare author: string;
@@ -26,9 +31,11 @@ class Book extends Model<BookAttributes, BookCreationAttributes> {
   declare rating: number | null;
   declare genre: string;
 
+  declare user_id: number; // Relational attribute
+
   // Timestamps
-  declare createdAt: Date;
-  declare updatedAt: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 Book.init(
@@ -57,6 +64,14 @@ Book.init(
       validate: { min: 1, max: 5, isInt: true },
     },
     genre: { type: DataTypes.STRING, allowNull: false },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
+    },
   },
   {
     sequelize,
@@ -65,5 +80,9 @@ Book.init(
     timestamps: true,
   }
 );
+
+// Definimos la relación entre Book y User
+Book.belongsTo(User, { foreignKey: "user_id", as: "user" });
+User.hasMany(Book, { foreignKey: "user_id", as: "books" });
 
 export default Book;

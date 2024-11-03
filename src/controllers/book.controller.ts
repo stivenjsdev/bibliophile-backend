@@ -4,7 +4,10 @@ import { BookFilters, BookService } from "../services/book.service";
 export class BookController {
   static async createBook(req: Request, res: Response) {
     try {
-      const book = await BookService.createBook(req.body);
+      const book = await BookService.createBook({
+        ...req.body,
+        user_id: req.userId,
+      });
       res.status(201).json(book);
     } catch (error) {
       console.log(error.message);
@@ -18,9 +21,13 @@ export class BookController {
       const page = parseInt(req.query.page as string) || 1; // Página actual
       const limit = parseInt(req.query.limit as string) || 10; // Número de registros por página
       const offset = (page - 1) * limit; // Calcular el offset
+      const { userId } = req;
 
       // Obtener los libros con pagination
-      const { books, total } = await BookService.getAllBooks({ limit, offset });
+      const { books, total } = await BookService.getAllBooks(
+        { limit, offset },
+        userId
+      );
 
       // Calcular el total de páginas
       const totalPages = Math.ceil(total / limit);
@@ -41,7 +48,10 @@ export class BookController {
 
   static async getBookById(req: Request, res: Response) {
     try {
-      const book = await BookService.getBookById(parseInt(req.params.id));
+      const book = await BookService.getBookById(
+        parseInt(req.params.id),
+        req.userId!
+      );
       if (book) {
         res.json(book);
       } else {
@@ -56,7 +66,8 @@ export class BookController {
     try {
       const updatedBook = await BookService.updateBook(
         parseInt(req.params.id),
-        req.body
+        req.body,
+        req.userId!
       );
       if (updatedBook) {
         res.json(updatedBook);
@@ -70,7 +81,10 @@ export class BookController {
 
   static async deleteBook(req: Request, res: Response) {
     try {
-      const deleted = await BookService.deleteBook(parseInt(req.params.id));
+      const deleted = await BookService.deleteBook(
+        parseInt(req.params.id),
+        req.userId!
+      );
       if (deleted) {
         res.json({ message: "Book deleted successfully" });
       } else {
@@ -86,6 +100,7 @@ export class BookController {
       const page = parseInt(req.query.page as string) || 1; // Página actual
       const limit = parseInt(req.query.limit as string) || 10; // Número de registros por página
       const offset = (page - 1) * limit; // Calcular el offset
+      const { userId } = req;
 
       const filters: BookFilters = {
         title: req.query.title as string,
@@ -99,10 +114,14 @@ export class BookController {
           : undefined,
       };
 
-      const { books, total } = await BookService.searchBooks(filters, {
-        limit,
-        offset,
-      });
+      const { books, total } = await BookService.searchBooks(
+        filters,
+        {
+          limit,
+          offset,
+        },
+        userId!
+      );
 
       // Calcular el total de páginas
       const totalPages = Math.ceil(total / limit);

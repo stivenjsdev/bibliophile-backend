@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body, param, query } from "express-validator";
 import { BookController } from "../controllers/book.controller";
-import { handleInputErrors } from "../middleware/validation.middelware";
+import { handleInputErrors } from "../middleware/validation.middleware";
 import { BookStatus } from "../models/book.model";
 
 // /api/books
