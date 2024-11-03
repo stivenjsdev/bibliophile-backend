@@ -1,12 +1,29 @@
 import Book, { BookCreationAttributes } from "../models/book.model";
 
+type PaginationParams = {
+  limit: number;
+  offset: number;
+};
+
 export class BookService {
   static async createBook(data: BookCreationAttributes): Promise<Book> {
     return await Book.create(data);
   }
 
-  static async getAllBooks(): Promise<Book[]> {
-    return await Book.findAll();
+  static async getAllBooks({
+    limit,
+    offset,
+  }: PaginationParams): Promise<{ books: Book[]; total: number }> {
+    const { rows: books, count: total } = await Book.findAndCountAll({
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]], // Opcional: Ordenar por fecha de creación (del más reciente al más antiguo)
+    });
+
+    return {
+      books: books,
+      total: total,
+    };
   }
 
   static async getBookById(id: number): Promise<Book | null> {

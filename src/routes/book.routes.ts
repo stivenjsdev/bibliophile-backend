@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 import { BookController } from "../controllers/book.controller";
 import { handleInputErrors } from "../middleware/validation";
 import { BookStatus } from "../models/book.model";
@@ -39,7 +39,13 @@ router.put(
 );
 
 // getAllBooks
-router.get("/", BookController.getAllBooks);
+router.get(
+  "/",
+  query("page").optional().isInt({ min: 1 }),
+  query("limit").optional().isInt({ min: 1, max: 100 }),
+  handleInputErrors,
+  BookController.getAllBooks
+);
 
 // getBookById
 router.get(

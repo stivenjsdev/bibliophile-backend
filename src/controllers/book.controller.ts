@@ -14,8 +14,26 @@ export class BookController {
 
   static async getAllBooks(req: Request, res: Response) {
     try {
-      const books = await BookService.getAllBooks();
-      res.json(books);
+      // Obtener los parámetros de consulta
+      const page = parseInt(req.query.page as string) || 1; // Página actual
+      const limit = parseInt(req.query.limit as string) || 10; // Número de registros por página
+      const offset = (page - 1) * limit; // Calcular el offset
+
+      // Obtener los libros con pagination
+      const { books, total } = await BookService.getAllBooks({ limit, offset });
+
+      // Calcular el total de páginas
+      const totalPages = Math.ceil(total / limit);
+
+      res.json({
+        books,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages,
+        },
+      });
     } catch (error) {
       res.status(500).json({ message: "Error fetching books", error });
     }
