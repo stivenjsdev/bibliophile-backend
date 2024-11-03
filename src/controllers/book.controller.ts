@@ -1,15 +1,8 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
 import { BookService } from "../services/book.service";
 
 export class BookController {
   static async createBook(req: Request, res: Response) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
-
     try {
       const book = await BookService.createBook(req.body);
       res.status(201).json(book);
@@ -42,12 +35,6 @@ export class BookController {
   }
 
   static async updateBook(req: Request, res: Response) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
-
     try {
       const updatedBook = await BookService.updateBook(
         parseInt(req.params.id),
