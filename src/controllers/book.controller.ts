@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BookService } from "../services/book.service";
+import { BookFilters, BookService } from "../services/book.service";
 
 export class BookController {
   static async createBook(req: Request, res: Response) {
@@ -78,6 +78,46 @@ export class BookController {
       }
     } catch (error) {
       res.status(500).json({ message: "Error deleting book", error });
+    }
+  }
+
+  static async searchBooks(req: Request, res: Response) {
+    try {
+      const page = parseInt(req.query.page as string) || 1; // Página actual
+      const limit = parseInt(req.query.limit as string) || 10; // Número de registros por página
+      const offset = (page - 1) * limit; // Calcular el offset
+
+      const filters: BookFilters = {
+        title: req.query.title as string,
+        author: req.query.author as string,
+        genre: req.query.genre as string,
+        status: req.query.status
+          ? parseInt(req.query.status as string)
+          : undefined,
+        rating: req.query.rating
+          ? parseInt(req.query.rating as string)
+          : undefined,
+      };
+
+      const { books, total } = await BookService.searchBooks(filters, {
+        limit,
+        offset,
+      });
+
+      // Calcular el total de páginas
+      const totalPages = Math.ceil(total / limit);
+
+      res.json({
+        books,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error searching books", error });
     }
   }
 }

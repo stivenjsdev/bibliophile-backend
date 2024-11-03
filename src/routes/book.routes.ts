@@ -4,7 +4,24 @@ import { BookController } from "../controllers/book.controller";
 import { handleInputErrors } from "../middleware/validation";
 import { BookStatus } from "../models/book.model";
 
+// /api/books
 const router = Router();
+
+// searchBooks
+router.get(
+  "/search",
+  query("page").optional().isInt({ min: 1 }),
+  query("limit").optional().isInt({ min: 1, max: 100 }),
+  query("title").optional().isString(),
+  query("author").optional().isString(),
+  query("genre").optional().isString(),
+  query("status")
+    .optional()
+    .isInt(),
+  query("rating").optional().isInt({ min: 1, max: 5 }),
+  handleInputErrors,
+  BookController.searchBooks
+);
 
 // createBook
 router.post(
