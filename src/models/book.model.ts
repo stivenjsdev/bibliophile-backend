@@ -2,12 +2,12 @@ import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
 
 export enum BookStatus {
-  TO_READ = 1,
-  READING = 2,
-  READ = 3,
+  TO_READ = 0,
+  READING = 1,
+  READ = 2,
 }
 
-type BookAttributes = {
+export type BookAttributes = {
   id: number;
   title: string;
   author: string;
@@ -16,7 +16,7 @@ type BookAttributes = {
   genre: string;
 };
 
-type BookCreationAttributes = Optional<BookAttributes, "id">;
+export type BookCreationAttributes = Optional<BookAttributes, "id">;
 
 class Book extends Model<BookAttributes, BookCreationAttributes> {
   declare id: number;
@@ -34,7 +34,7 @@ class Book extends Model<BookAttributes, BookCreationAttributes> {
 Book.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },

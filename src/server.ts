@@ -1,9 +1,9 @@
+import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import { corsConfig } from "./config/cors";
 import { connectDB } from "./config/database";
-// import bookRoutes from "./routes/bookRoutes";
-import cors from "cors";
+import bookRoutes from "./routes/book.routes";
 
 // Conexión a la base de datos
 connectDB();
@@ -16,6 +16,6 @@ app.use(morgan("dev")); // Logger
 app.use(express.json()); // Leer datos de formularios
 
 // Routes
-// app.use("/api/books", bookRoutes);
+app.use("/api/books", bookRoutes);
 
 export default app;
