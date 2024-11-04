@@ -1,6 +1,6 @@
 # Bibliophile - Backend
 
-Este proyecto es el backend de **Bibliophile**, una aplicación de gestión de libros. Desarrollado en Node.js con TypeScript, Express y Sequelize, este backend permite la autenticación y autorización de usuarios para que puedan gestionar sus colecciones de libros de manera segura. La base de datos está implementada en PostgreSQL y alojada en Render.
+Este proyecto es el backend de **Bibliophile**, una aplicación de gestión de libros. Desarrollado en **Node.js** con TypeScript, Express y Sequelize, este backend permite la autenticación y autorización de usuarios para que puedan gestionar sus colecciones de libros de manera segura. La base de datos está implementada en PostgreSQL y alojada en **Render**.
 
 ## Características
 
@@ -87,7 +87,7 @@ La API estará disponible en http://localhost:4000.
 ├── services         # Servicios de lógica de negocio
 │   ├── auth.service.ts
 │   └── book.service.ts
-├── config           # Configuración de la base de datos
+├── config           # Configuración db, cors y envs
 │   ├── database.ts
 │   ├── config.ts
 │   └── cors.ts
