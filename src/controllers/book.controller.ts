@@ -97,14 +97,14 @@ export class BookController {
 
   static async searchBooks(req: Request, res: Response) {
     try {
-      const page = parseInt(req.query.page as string) || 1; // Página actual
-      const limit = parseInt(req.query.limit as string) || 10; // Número de registros por página
-      const offset = (page - 1) * limit; // Calcular el offset
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const offset = (page - 1) * limit;
       const { userId } = req;
 
       const filters: BookFilters = {
-        title: req.query.title as string,
-        author: req.query.author as string,
+        title: req.query.search as string, // Cambiado de 'title' a 'search'
+        author: req.query.search as string, // Añadido para buscar por autor
         genre: req.query.genre as string,
         status: req.query.status
           ? parseInt(req.query.status as string)
@@ -123,7 +123,6 @@ export class BookController {
         userId!
       );
 
-      // Calcular el total de páginas
       const totalPages = Math.ceil(total / limit);
 
       res.json({

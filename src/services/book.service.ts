@@ -76,11 +76,15 @@ export class BookService {
     const { limit, offset } = pagination;
     const { title, author, genre, status, rating } = filters;
 
-    // Construimos la consulta de filtrado con los parámetros opcionales
     const where: any = { user_id: userId };
 
-    if (title) where.title = { [Op.iLike]: `%${title}%` };
-    if (author) where.author = { [Op.iLike]: `%${author}%` };
+    if (title || author) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${title || ""}%` } },
+        { author: { [Op.iLike]: `%${author || ""}%` } },
+      ];
+    }
+
     if (genre) where.genre = { [Op.iLike]: `%${genre}%` };
     if (status !== undefined) where.status = status;
     if (rating) where.rating = rating;
@@ -89,7 +93,7 @@ export class BookService {
       where,
       limit,
       offset,
-      order: [["createdAt", "DESC"]], // Opcional: Ordenar por fecha de creación (del más reciente al más antiguo)
+      order: [["createdAt", "DESC"]],
     });
 
     return {
