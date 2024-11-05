@@ -25,4 +25,17 @@ export class AuthService {
       expiresIn: "1h",
     }); // todo: change expiresIn to the desired value
   }
+
+  // Método para verificar un token JWT
+  static async validateToken(token: string): Promise<User | null> {
+    try {
+      const decoded = jwt.verify(token, config.JWT_SECRET) as {
+        userId: number;
+      };
+      const user = await User.findByPk(decoded.userId);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
 }

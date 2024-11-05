@@ -27,4 +27,7 @@ router.post(
   AuthController.login
 );
 
+// validateToken
+router.get("/validate", AuthController.validateToken);
+
 export default router;
