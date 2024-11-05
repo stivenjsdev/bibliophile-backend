@@ -21,6 +21,9 @@ router.get(
   BookController.searchBooks
 );
 
+// Get all unique genres
+router.get("/genres", BookController.getAllGenres);
+
 // createBook
 router.post(
   "/",

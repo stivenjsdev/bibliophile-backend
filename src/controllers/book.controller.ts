@@ -139,4 +139,15 @@ export class BookController {
       res.status(500).json({ message: "Error searching books", error });
     }
   }
+
+  static async getAllGenres(req: Request, res: Response) {
+    try {
+      const { userId } = req;
+      console.log("controller", userId);
+      const genres = await BookService.getAllGenres(userId!);
+      res.json(genres);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching genres", error });
+    }
+  }
 }
