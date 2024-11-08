@@ -23,7 +23,7 @@ export class AuthController {
       }
 
       const token = AuthService.generateToken(user.id);
-      res.status(200).json({ token });
+      res.status(200).json({ token, user });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Error logging in", error });
