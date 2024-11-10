@@ -191,6 +191,10 @@ http://localhost:4000/api
 
 ## Gestión de Libros (`/api/books`)
 
+> Todas las rutas de `/api/books` requieren un token de autenticación.
+>
+> **Headers**: `Authorization: Bearer <token>`
+
 ### **[POST] /api/books/**
 
 - **Descripción**: Crea un nuevo libro.
@@ -235,7 +239,14 @@ http://localhost:4000/api
     {
       "books": [
         {
-          /* detalles del libro */
+          "id": "number",
+          "title": "string",
+          "author": "string",
+          "genre": "string",
+          "status": "number",
+          "rating": "number",
+          "createdAt": "string",
+          "updatedAt": "string"
         }
       ],
       "pagination": {
@@ -256,6 +267,19 @@ http://localhost:4000/api
   - `id`: ID del libro (obligatorio, entero)
 - **Respuesta**:
   - **200 OK**: Devuelve los detalles del libro.
+  - **Body**:
+    ```json
+    {
+      "id": "number",
+      "title": "string",
+      "author": "string",
+      "genre": "string",
+      "status": "number",
+      "rating": "number",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+    ```
   - **404 Not Found**: Libro no encontrado.
 
 ---
@@ -277,6 +301,19 @@ http://localhost:4000/api
   ```
 - **Respuesta**:
   - **200 OK**: Libro actualizado.
+  - **Body**:
+    ```json
+    {
+      "id": "number",
+      "title": "string",
+      "author": "string",
+      "genre": "string",
+      "status": "number",
+      "rating": "number",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+    ```
   - **404 Not Found**: Libro no encontrado.
 
 ---
@@ -300,6 +337,29 @@ http://localhost:4000/api
   - `title`, `author`, `genre`, `status`, `rating`: Filtros de búsqueda
 - **Respuesta**:
   - **200 OK**: Devuelve una lista de libros filtrados.
+  - **Body**:
+    ```json
+    {
+      "books": [
+        {
+          "id": "number",
+          "title": "string",
+          "author": "string",
+          "genre": "string",
+          "status": "number",
+          "rating": "number",
+          "createdAt": "string",
+          "updatedAt": "string"
+        }
+      ],
+      "pagination": {
+        "page": "number",
+        "limit": "number",
+        "total": "number",
+        "totalPages": "number"
+      }
+    }
+    ```
 
 ---
 
