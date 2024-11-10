@@ -22,7 +22,7 @@ export class AuthService {
   static generateToken(userId: number): string {
     const payload = { userId };
     return jwt.sign(payload, config.JWT_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "1h",
     }); // todo: change expiresIn to the desired value
   }
 
