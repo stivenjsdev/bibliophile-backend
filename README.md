@@ -54,6 +54,7 @@ PORT=4000
 FRONTEND_URL=http://localhost:5173
 JWT_SECRET=palabrasupersecreta
 ```
+
 - DATABASE_URL: URL de conexión de tu base de datos PostgreSQL en Render.
 - JWT_SECRET: Clave secreta para firmar los tokens JWT.
 - PORT: Puerto en el que se ejecutará la API.
@@ -100,4 +101,214 @@ La API estará disponible en http://localhost:4000.
 Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request.
 
 ## Licencia
+
 Este proyecto está bajo la Licencia MIT.
+
+## Endpoints
+
+### Base URL
+
+```
+http://localhost:4000/api
+```
+
+---
+
+## Autenticación (`/auth`)
+
+### **[POST] /auth/register**
+
+- **Descripción**: Registra un nuevo usuario.
+- **Cuerpo de la solicitud**:
+  ```json
+  {
+    "name": "string",
+    "phone": "string",
+    "password": "string"
+  }
+  ```
+- **Respuesta**:
+  - **201 Created**: Usuario registrado exitosamente.
+  - **Body**:
+    ```json
+    {
+      "message": "User registered successfully",
+      "user": {
+        "id": "string",
+        "name": "string",
+        "phone": "string"
+      }
+    }
+    ```
+
+---
+
+### **[POST] /auth/login**
+
+- **Descripción**: Inicia sesión de un usuario.
+- **Cuerpo de la solicitud**:
+  ```json
+  {
+    "phone": "string",
+    "password": "string"
+  }
+  ```
+- **Respuesta**:
+  - **200 OK**: Devuelve un token de autenticación y el usuario.
+  - **Body**:
+    ```json
+    {
+      "token": "string",
+      "user": {
+        "id": "string",
+        "name": "string",
+        "phone": "string"
+      }
+    }
+    ```
+
+---
+
+### **[GET] /auth/validate**
+
+- **Descripción**: Valida un token de autenticación.
+- **Headers**: `Authorization: Bearer <token>`
+- **Respuesta**:
+  - **200 OK**: Token válido.
+  - **Body**:
+    ```json
+    {
+      "message": "Token is valid",
+      "user": {
+        "id": "string",
+        "name": "string",
+        "phone": "string"
+      }
+    }
+    ```
+
+---
+
+## Gestión de Libros (`/api/books`)
+
+### **[POST] /api/books/**
+
+- **Descripción**: Crea un nuevo libro.
+- **Cuerpo de la solicitud**:
+  ```json
+  {
+    "title": "string",
+    "author": "string",
+    "genre": "string",
+    "status": "number",
+    "rating": "number"
+  }
+  ```
+- **Respuesta**:
+  - **201 Created**: Libro creado exitosamente.
+  - **Body**:
+    ```json
+    {
+      "id": "number",
+      "title": "string",
+      "author": "string",
+      "genre": "string",
+      "status": "number",
+      "rating": "number",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+    ```
+
+---
+
+### **[GET] /api/books/**
+
+- **Descripción**: Obtiene una lista de libros.
+- **Parámetros de consulta**:
+  - `page`: Número de página (opcional, entero)
+  - `limit`: Cantidad de libros por página (opcional, entero)
+- **Respuesta**:
+  - **200 OK**: Devuelve una lista de libros con paginación.
+  - **Body**:
+    ```json
+    {
+      "books": [
+        {
+          /* detalles del libro */
+        }
+      ],
+      "pagination": {
+        "page": "number",
+        "limit": "number",
+        "total": "number",
+        "totalPages": "number"
+      }
+    }
+    ```
+
+---
+
+### **[GET] /api/books/:id**
+
+- **Descripción**: Obtiene los detalles de un libro por ID.
+- **Parámetros de ruta**:
+  - `id`: ID del libro (obligatorio, entero)
+- **Respuesta**:
+  - **200 OK**: Devuelve los detalles del libro.
+  - **404 Not Found**: Libro no encontrado.
+
+---
+
+### **[PUT] /api/books/:id**
+
+- **Descripción**: Actualiza los datos de un libro por ID.
+- **Parámetros de ruta**:
+  - `id`: ID del libro (obligatorio, entero)
+- **Cuerpo de la solicitud**:
+  ```json
+  {
+    "title": "string",
+    "author": "string",
+    "genre": "string",
+    "status": "number",
+    "rating": "number"
+  }
+  ```
+- **Respuesta**:
+  - **200 OK**: Libro actualizado.
+  - **404 Not Found**: Libro no encontrado.
+
+---
+
+### **[DELETE] /api/books/:id**
+
+- **Descripción**: Elimina un libro por ID.
+- **Parámetros de ruta**:
+  - `id`: ID del libro (obligatorio, entero)
+- **Respuesta**:
+  - **200 OK**: Confirmación de eliminación.
+  - **404 Not Found**: Libro no encontrado.
+
+---
+
+### **[GET] /api/books/search**
+
+- **Descripción**: Busca libros por filtros.
+- **Parámetros de consulta**:
+  - `page`, `limit`: Control de paginación
+  - `title`, `author`, `genre`, `status`, `rating`: Filtros de búsqueda
+- **Respuesta**:
+  - **200 OK**: Devuelve una lista de libros filtrados.
+
+---
+
+### **[GET] /api/books/genres**
+
+- **Descripción**: Obtiene una lista de géneros de libros.
+- **Respuesta**:
+  - **200 OK**: Lista de géneros únicos.
+  - **Body**:
+    ```json
+    ["string"]
+    ```
