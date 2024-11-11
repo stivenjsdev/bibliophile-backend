@@ -45,7 +45,6 @@ export class AuthController {
       }
 
       const { password, ...userWithoutPassword } = user.toJSON();
-      console.log(userWithoutPassword); // todo: remove this line in production
       res
         .status(200)
         .json({ message: "Token is valid", user: userWithoutPassword });

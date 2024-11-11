@@ -105,14 +105,11 @@ export class BookService {
   static async getAllGenres(
     userId: BookCreationAttributes["user_id"]
   ): Promise<string[]> {
-    console.log(userId);
     const genres = await Book.findAll({
       where: { user_id: userId },
       attributes: [[sequelize.fn("DISTINCT", sequelize.col("genre")), "genre"]],
       raw: true, // get plain JavaScript objects instead of Sequelize model instances
     });
-    console.log("after query");
-    console.log(genres);
 
     return genres.map((book) => book.genre);
   }
